@@ -3,4 +3,4 @@ install/
 log/
 .vscode/
 *.pyc
-__pycache__/
+__pycache__/PROJECT_REPORT_PRIVATE.md
