@@ -50,7 +50,7 @@ def generate_launch_description():
                 output='screen',
                 parameters=[
                     os.path.join(
-                        get_package_share_directory('nav_config'),
+                        get_package_share_directory('multi_robot_bringup'),
                         'husky_slam_params.yaml'
                     )
                 ],
