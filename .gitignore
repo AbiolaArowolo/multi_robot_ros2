@@ -4,3 +4,5 @@ log/
 .vscode/
 *.pyc
 __pycache__/PROJECT_REPORT_PRIVATE.md
+*.bak
+PROJECT_REPORT_PRIVATE.md
