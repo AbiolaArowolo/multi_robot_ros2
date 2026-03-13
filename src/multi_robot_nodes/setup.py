@@ -24,6 +24,9 @@ setup(
     },
     entry_points={
         'console_scripts': [
+            'odom_to_tf_broadcaster = multi_robot_nodes.odom_to_tf_broadcaster:main',
+            'husky_hello_node = multi_robot_nodes.husky_hello_node:main',
+            'tb3_hello_node = multi_robot_nodes.tb3_hello_node:main',
         ],
     },
 )
