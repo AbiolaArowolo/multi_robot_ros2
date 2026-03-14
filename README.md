@@ -1,33 +1,15 @@
 # Multi-Robot Cooperative Navigation — ROS 2 Humble
 
-**Student:** Abiola Arowolo
-**Supervisor:** Prof. Doyun Lee | **Mentor:** Yong Ann Voeurn (PhD)
-**Institution:** GSOU
+**Student:** Ayodele Abiola Arowolo (Incoming Masters)
+**Direct Mentor:** Yong Ann Voeurn (PhD Candidate)
+**Supervisor:** Prof. Doyun Lee — Georgia Southern University
 **ROS Distribution:** ROS 2 Humble | **Simulator:** Ignition Gazebo 6 (Fortress)
 
 ---
 
 ## Project Overview
 
-This project implements a cooperative multi-robot navigation system using a **Clearpath Husky A200** and a **TurtleBot3** in a simulated warehouse environment.
-
-The system progressively builds toward a fully autonomous multi-robot architecture featuring:
-- 2D SLAM-based warehouse mapping
-- AMCL probabilistic localization
-- Nav2 autonomous goal navigation
-- Inter-robot goal sharing
-- Dynamic leader-follower role switching
-
----
-
-## System Requirements
-
-| Component | Version |
-|-----------|---------|
-| ROS 2 | Humble Hawksbill |
-| Simulator | Ignition Gazebo 6 (Fortress) |
-| OS | Ubuntu 22.04 (or WSL2) |
-| Python | 3.10+ |
+This project implements a cooperative multi-robot navigation system using a **Clearpath Husky A200** and a **TurtleBot3** in a simulated warehouse environment. The system integrates SLAM-based mapping, AMCL localization, Nav2 autonomous navigation, inter-robot goal sharing, and dynamic leader-follower role switching.
 
 ---
 
@@ -35,82 +17,113 @@ The system progressively builds toward a fully autonomous multi-robot architectu
 
 | Task | Description | Status |
 |------|-------------|--------|
-| Task 1 | Basic ROS 2 pub/sub nodes |  Complete |
-| Task 2A | Husky SLAM — warehouse map built and saved |  Complete |
-| Task 2B | Husky Nav2 — AMCL localization + autonomous navigation |  Complete |
-| Task 3 | TurtleBot3 + Husky dual spawn, pub/sub communication |  In Progress |
+| Task 1 | Basic ROS 2 pub/sub nodes (`my_robot_pkg`) | ✅ Complete |
+| Task 2A | Husky SLAM — warehouse map built and saved | ✅ Complete |
+| Task 2B | Husky Nav2 — AMCL localization + autonomous goal navigation | ✅ Complete |
+| Task 3 | TurtleBot3 + Husky dual spawn, bridged topics, hello nodes | ✅ Complete |
 | Task 4 | Leader-follower controller (Husky leads, TurtleBot3 follows) | ⏳ Pending |
 | Task 5 | Goal sharing node + role manager node | ⏳ Pending |
 
 ---
 
-## Architecture Overview
-
-```
-┌──────────────────────────────────────────────────────────┐
-│                    ROS 2 Humble Stack                     │
-├─────────────────────┬────────────────────────────────────┤
-│   Husky A200        │   TurtleBot3                        │
-│   /a200_0000/       │   /turtlebot3/                      │
-├─────────────────────┴────────────────────────────────────┤
-│   Shared map frame (SLAM → AMCL → Nav2)                  │
-│   Inter-robot goal sharing via /shared_goal              │
-│   Dynamic leader-follower role switching                 │
-└──────────────────────────────────────────────────────────┘
-```
-
----
-
 ## Repository Structure
 
-```
+\`\`\`
 ~/ros2_ws/
-├── README.md                         ← You are here
-├── docs/
-│   ├── SETUP.md                      ← Full setup & testing guide
-│   └── media/                        ← Screenshots, diagrams, demo GIFs
-├── maps/
-│   ├── husky_map.pgm
-│   ├── husky_map.yaml
-│   ├── turtlebot3_map.pgm
-│   └── turtlebot3_map.yaml
-└── src/
-    ├── multi_robot_bringup/
-    │   ├── launch/
-    │   │   ├── husky_slam_warehouse.launch.py
-    │   │   └── husky_nav2.launch.py
-    │   ├── config/
-    │   │   ├── husky_slam_params.yaml
-    │   │   └── husky_nav2_params.yaml
-    │   └── setup.py
-    ├── multi_robot_nodes/
-    │   └── multi_robot_nodes/
-    │       ├── goal_sharing_node.py
-    │       └── role_manager_node.py
-    └── my_robot_pkg/                 ← Task 1 (do not modify)
-```
+├── src/
+│   ├── multi_robot_bringup/
+│   │   ├── launch/
+│   │   │   ├── husky_slam_warehouse.launch.py
+│   │   │   ├── husky_nav2.launch.py
+│   │   │   └── task3_dual_spawn.launch.py
+│   │   ├── config/
+│   │   │   ├── husky_slam_params.yaml
+│   │   │   └── husky_nav2_params.yaml
+│   │   ├── models/
+│   │   │   └── turtlebot3_burger/
+│   │   │       ├── model.sdf
+│   │   │       └── model.config
+│   │   └── setup.py
+│   ├── multi_robot_nodes/
+│   │   └── multi_robot_nodes/
+│   │       ├── husky_hello_node.py
+│   │       ├── tb3_hello_node.py
+│   │       └── odom_to_tf_broadcaster.py
+│   └── my_robot_pkg/
+└── maps/
+    ├── husky_map.pgm / .yaml
+    └── turtlebot3_map.pgm / .yaml
+\`\`\`
 
 ---
 
-## Quick Start
+## Environment Setup
 
-Full setup and testing instructions → **[docs/SETUP.md](docs/SETUP.md)**
+\`\`\`bash
+sudo apt install ros-humble-navigation2 ros-humble-nav2-bringup
+sudo apt install ros-humble-slam-toolbox
+sudo apt install ros-humble-clearpath-*
+sudo apt install ros-humble-turtlebot3*
 
-```bash
-# Clone and build
-git clone https://github.com/AbiolaArowolo/multi_robot_ros2.git
-cd multi_robot_ros2 && colcon build --symlink-install
+cd ~/ros2_ws && colcon build --symlink-install
 
-# Source
-source /opt/ros/humble/setup.bash && source install/setup.bash
+source /opt/ros/humble/setup.bash
+source /usr/share/gazebo/setup.sh
+source ~/ros2_ws/install/setup.bash
+\`\`\`
 
-# Launch Nav2 demo
+---
+
+## Task 2A — Husky SLAM Mapping
+
+\`\`\`bash
+ros2 launch clearpath_gz simulation.launch.py world:=warehouse
+ros2 launch multi_robot_bringup husky_slam_warehouse.launch.py
+ros2 run nav2_map_server map_saver_cli -f ~/ros2_ws/maps/husky_map
+\`\`\`
+
+---
+
+## Task 2B — Husky Nav2 Autonomous Navigation
+
+\`\`\`bash
+ros2 launch clearpath_gz simulation.launch.py world:=warehouse
 ros2 launch multi_robot_bringup husky_nav2.launch.py
-```
+ros2 action send_goal /a200_0000/navigate_to_pose nav2_msgs/action/NavigateToPose '{pose: {header: {frame_id: "map"}, pose: {position: {x: 2.0, y: 0.0, z: 0.0}, orientation: {w: 1.0}}}}'
+\`\`\`
 
 ---
 
+## Task 3 — Dual Robot Spawn + Communication
+
+\`\`\`bash
+ros2 launch multi_robot_bringup task3_dual_spawn.launch.py
+ros2 topic list | grep turtlebot3
+ros2 topic pub /turtlebot3/cmd_vel geometry_msgs/msg/Twist '{linear: {x: 0.2}}' --rate 10
+\`\`\`
 
 ---
 
-*Academic project — GSOU. Not licensed for commercial use.*
+## Useful Commands
+
+\`\`\`bash
+killros
+ros2 lifecycle list /a200_0000/bt_navigator
+ign topic -l | grep -v "__" | grep -v "world" | grep -v "gui" | grep -v "stats"
+cd ~/ros2_ws && colcon build --symlink-install
+\`\`\`
+
+---
+
+## Known Warnings (Safe to Ignore)
+
+| Warning | Reason |
+|---------|--------|
+| \`transient local durability falling back to volatile\` | QoS mismatch on TF — harmless |
+| \`QStandardPaths: runtime directory not owned by UID\` | WSL2 display warning |
+| \`Unable to deserialize sdf::Model\` | Clearpath Ignition model warning |
+| TB3 scan rate ~1.3 Hz (nominal 5 Hz) | WSL2 software rendering throttle |
+
+---
+
+*Academic project — Georgia Southern University. Not licensed for commercial use.*
