@@ -27,6 +27,7 @@ setup(
             # Task 4
             'leader_pose_publisher = multi_robot_nodes.leader_pose_publisher:main',
             'follower_controller = multi_robot_nodes.follower_controller:main',
+            'breadcrumb_follower = multi_robot_nodes.breadcrumb_follower:main',
         ],
     },
 )

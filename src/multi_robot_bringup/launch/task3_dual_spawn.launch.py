@@ -37,7 +37,7 @@ def generate_launch_description():
                 'launch', 'simulation.launch.py'
             )
         ),
-        launch_arguments={'world': 'warehouse'}.items(),
+        launch_arguments={'world': 'warehouse', 'x': '0.0', 'y': '2.0'}.items(),
     )
 
     # ═══════════════════════════════════════════════════════════════════
@@ -73,7 +73,7 @@ def generate_launch_description():
         arguments=[
             '-name', 'turtlebot3',
             '-file', sdf_file,
-            '-x', '2.0',
+            '-x', '-2.0',
             '-y', '2.0',
             '-z', '0.01',
         ],
