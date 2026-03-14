@@ -276,17 +276,8 @@ ros2 topic pub /turtlebot3/cmd_vel geometry_msgs/msg/Twist '{}' --once
 
 ---
 
-## Guardrails
 
-- **ROS 2 Humble only** — do not upgrade
-- **Ignition Gazebo 6 (Fortress)** — not Gazebo Classic
-- **Workspace:** `~/ros2_ws` — do not move or rename
-- **Husky namespace:** `/a200_0000/` | **TB3 namespace:** `/turtlebot3/`
-- **`my_robot_pkg`** — do not touch (Task 1 deliverables)
-- **VPN must be OFF** for all apt installs and git push
-- **TB3 link names must stay prefixed `tb3_`** — prevents cross-model joint binding
-- **Do NOT add `sensors-system` plugin to robot models** — warehouse world loads it
-- **No hardcoded paths** — use `get_package_share_directory()` and `model://` URIs
+
 
 ---
 
