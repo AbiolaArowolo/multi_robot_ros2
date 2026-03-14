@@ -49,11 +49,11 @@ class BreadcrumbFollower(Node):
     # TB3 only consumes the front waypoint when the queue is longer than
     # this, so TB3 trails by at least MIN_QUEUE_SIZE * RECORD_DIST metres.
     # At 0.15 m spacing, 7 waypoints ≈ 1.05 m gap.
-    MIN_QUEUE_SIZE = 5
+    MIN_QUEUE_SIZE = 4
 
     # ── Arrival / control ────────────────────────────────────────────────
     ARRIVE_TOLERANCE = 0.08  # m   — pop waypoint when within this radius
-    MAX_LINEAR       = 0.18  # m/s
+    MAX_LINEAR       = 0.22  # m/s
     MAX_ANGULAR      = 1.20  # rad/s
     K_LINEAR         = 0.60
     K_ANGULAR        = 1.40
