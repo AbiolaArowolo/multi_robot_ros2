@@ -1,0 +1,274 @@
+<?xml version="1.0" ?>
+<sdf version="1.8">
+  <model name="turtlebot3">
+    <static>false</static>
+    <pose>0 0 0 0 0 0</pose>
+
+    <!-- BASE FOOTPRINT -->
+    <link name="tb3_base_footprint"/>
+
+    <joint name="base_joint" type="fixed">
+      <parent>tb3_base_footprint</parent>
+      <child>tb3_base_link</child>
+    </joint>
+
+    <!-- BASE LINK -->
+    <link name="tb3_base_link">
+      <pose>0 0 0.010 0 0 0</pose>
+      <inertial>
+        <mass>0.82573504</mass>
+        <inertia>
+          <ixx>0.0022124416</ixx>
+          <ixy>-0.000012294101</ixy>
+          <ixz>0.000034938785</ixz>
+          <iyy>0.0021193702</iyy>
+          <iyz>-0.0000050120904</iyz>
+          <izz>0.0020064271</izz>
+        </inertia>
+      </inertial>
+      <visual name="base_visual">
+        <pose>-0.032 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <uri>model://turtlebot3_description/meshes/bases/burger_base.stl</uri>
+            <scale>0.001 0.001 0.001</scale>
+          </mesh>
+        </geometry>
+        <material>
+          <ambient>0.6 0.0 0.0 1.0</ambient>
+          <diffuse>0.9 0.05 0.05 1.0</diffuse>
+          <specular>0.4 0.1 0.1 1.0</specular>
+        </material>
+      </visual>
+      <collision name="base_collision">
+        <pose>-0.032 0 0.070 0 0 0</pose>
+        <geometry>
+          <box><size>0.140 0.140 0.143</size></box>
+        </geometry>
+      </collision>
+    </link>
+
+    <!-- LEFT WHEEL -->
+    <link name="wheel_left_link">
+      <pose>0.0 0.08 0.033 -1.5708 0 0</pose>
+      <inertial>
+        <mass>0.028498940</mass>
+        <inertia>
+          <ixx>0.000011175580</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>0.000011192413</iyy>
+          <iyz>0</iyz>
+          <izz>0.000020712558</izz>
+        </inertia>
+      </inertial>
+      <visual name="wheel_left_visual">
+        <pose>0 0 0 1.5708 0 0</pose>
+        <geometry>
+          <mesh>
+            <uri>model://turtlebot3_description/meshes/wheels/left_tire.stl</uri>
+            <scale>0.001 0.001 0.001</scale>
+          </mesh>
+        </geometry>
+        <material>
+          <ambient>0.05 0.05 0.05 1.0</ambient>
+          <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          <specular>0.1 0.1 0.1 1.0</specular>
+        </material>
+      </visual>
+      <collision name="wheel_left_collision">
+        <geometry>
+          <cylinder><radius>0.033</radius><length>0.018</length></cylinder>
+        </geometry>
+      </collision>
+    </link>
+
+    <joint name="wheel_left_joint" type="revolute">
+      <parent>tb3_base_link</parent>
+      <child>wheel_left_link</child>
+      <axis>
+        <xyz expressed_in="__model__">0 1 0</xyz>
+        <limit>
+          <lower>-1.79769e+308</lower>
+          <upper>1.79769e+308</upper>
+          <effort>20</effort>
+        </limit>
+      </axis>
+    </joint>
+
+    <!-- RIGHT WHEEL -->
+    <link name="wheel_right_link">
+      <pose>0.0 -0.08 0.033 -1.5708 0 0</pose>
+      <inertial>
+        <mass>0.028498940</mass>
+        <inertia>
+          <ixx>0.000011175580</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>0.000011192413</iyy>
+          <iyz>0</iyz>
+          <izz>0.000020712558</izz>
+        </inertia>
+      </inertial>
+      <visual name="wheel_right_visual">
+        <pose>0 0 0 1.5708 0 0</pose>
+        <geometry>
+          <mesh>
+            <uri>model://turtlebot3_description/meshes/wheels/right_tire.stl</uri>
+            <scale>0.001 0.001 0.001</scale>
+          </mesh>
+        </geometry>
+        <material>
+          <ambient>0.05 0.05 0.05 1.0</ambient>
+          <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          <specular>0.1 0.1 0.1 1.0</specular>
+        </material>
+      </visual>
+      <collision name="wheel_right_collision">
+        <geometry>
+          <cylinder><radius>0.033</radius><length>0.018</length></cylinder>
+        </geometry>
+      </collision>
+    </link>
+
+    <joint name="wheel_right_joint" type="revolute">
+      <parent>tb3_base_link</parent>
+      <child>wheel_right_link</child>
+      <axis>
+        <xyz expressed_in="__model__">0 1 0</xyz>
+        <limit>
+          <lower>-1.79769e+308</lower>
+          <upper>1.79769e+308</upper>
+          <effort>20</effort>
+        </limit>
+      </axis>
+    </joint>
+
+    <!-- CASTER (sphere, zero friction) -->
+    <link name="caster_back_link">
+      <pose>-0.081 0 0.005 0 0 0</pose>
+      <inertial>
+        <mass>0.005</mass>
+        <inertia>
+          <ixx>0.0001</ixx><ixy>0</ixy><ixz>0</ixz>
+          <iyy>0.0001</iyy><iyz>0</iyz><izz>0.0001</izz>
+        </inertia>
+      </inertial>
+      <collision name="caster_collision">
+        <geometry>
+          <sphere><radius>0.005</radius></sphere>
+        </geometry>
+        <surface>
+          <friction>
+            <ode><mu>0.0</mu><mu2>0.0</mu2></ode>
+          </friction>
+        </surface>
+      </collision>
+    </link>
+
+    <joint name="caster_back_joint" type="fixed">
+      <parent>tb3_base_link</parent>
+      <child>caster_back_link</child>
+    </joint>
+
+    <!-- IMU LINK -->
+    <link name="imu_link">
+      <pose>-0.032 0 0.078 0 0 0</pose>
+    </link>
+
+    <joint name="imu_joint" type="fixed">
+      <parent>tb3_base_link</parent>
+      <child>imu_link</child>
+    </joint>
+
+    <!-- LIDAR (base_scan) -->
+    <link name="base_scan">
+      <pose>-0.032 0 0.182 0 0 0</pose>
+      <inertial>
+        <mass>0.114</mass>
+        <inertia>
+          <ixx>0.001</ixx><ixy>0</ixy><ixz>0</ixz>
+          <iyy>0.001</iyy><iyz>0</iyz><izz>0.001</izz>
+        </inertia>
+      </inertial>
+      <visual name="lidar_visual">
+        <geometry>
+          <mesh>
+            <uri>model://turtlebot3_description/meshes/sensors/lds.stl</uri>
+            <scale>0.001 0.001 0.001</scale>
+          </mesh>
+        </geometry>
+        <material>
+          <ambient>0.6 0.0 0.0 1.0</ambient>
+          <diffuse>0.9 0.05 0.05 1.0</diffuse>
+          <specular>0.4 0.1 0.1 1.0</specular>
+        </material>
+      </visual>
+      <collision name="lidar_collision">
+        <pose>0.015 0 -0.0065 0 0 0</pose>
+        <geometry>
+          <cylinder><length>0.0315</length><radius>0.055</radius></cylinder>
+        </geometry>
+      </collision>
+      <sensor name="lidar" type="gpu_lidar">
+        <always_on>true</always_on>
+        <visualize>true</visualize>
+        <update_rate>5</update_rate>
+        <topic>scan</topic>
+        <gz_frame_id>base_scan</gz_frame_id>
+        <lidar>
+          <scan>
+            <horizontal>
+              <samples>360</samples>
+              <resolution>1</resolution>
+              <min_angle>0.0</min_angle>
+              <max_angle>6.28318530718</max_angle>
+            </horizontal>
+          </scan>
+          <range>
+            <min>0.120</min>
+            <max>3.5</max>
+            <resolution>0.015</resolution>
+          </range>
+          <noise>
+            <type>gaussian</type>
+            <mean>0.0</mean>
+            <stddev>0.01</stddev>
+          </noise>
+        </lidar>
+      </sensor>
+    </link>
+
+    <joint name="scan_joint" type="fixed">
+      <parent>tb3_base_link</parent>
+      <child>base_scan</child>
+    </joint>
+
+    <!-- PLUGINS -->
+    <plugin filename="ignition-gazebo-diff-drive-system"
+            name="ignition::gazebo::systems::DiffDrive">
+      <left_joint>wheel_left_joint</left_joint>
+      <right_joint>wheel_right_joint</right_joint>
+      <wheel_separation>0.160</wheel_separation>
+      <wheel_radius>0.033</wheel_radius>
+      <max_linear_acceleration>1.0</max_linear_acceleration>
+      <min_linear_acceleration>-1.0</min_linear_acceleration>
+      <max_angular_acceleration>2.0</max_angular_acceleration>
+      <min_angular_acceleration>-2.0</min_angular_acceleration>
+      <odom_publish_frequency>30</odom_publish_frequency>
+      <topic>/turtlebot3/cmd_vel</topic>
+      <odom_topic>odom</odom_topic>
+      <tf_topic>tf</tf_topic>
+      <frame_id>odom</frame_id>
+      <child_frame_id>tb3_base_footprint</child_frame_id>
+    </plugin>
+
+    <plugin filename="ignition-gazebo-joint-state-publisher-system"
+            name="ignition::gazebo::systems::JointStatePublisher">
+      <topic>joint_states</topic>
+      <joint_name>wheel_left_joint</joint_name>
+      <joint_name>wheel_right_joint</joint_name>
+    </plugin>
+
+  </model>
+</sdf>
